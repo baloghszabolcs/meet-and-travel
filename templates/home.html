@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/64d844b5ac.js" crossorigin="anonymous"></script>
+
+
+
+
+    <script>
+        $(function () {
+            $('#example-popover').popover({
+                container: 'body'
+            })
+        })
+    </script>
+
+</head>
+<!--<body style="background-attachment: fixed; background-image: url('../static/2.jpg'); background-repeat: no-repeat; background-position: 0px 60px;
+background-size: 100% 70%">-->
+<body>
+
+
+<nav class="navbar navbar-expand-sm navbar-dark  fixed-top" style="background-color:#000033; font-size: 19px">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 23px">travel.hu</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    {% if user['passenger_or_driver'] == 'Sofőr' %}
+                        <a class="nav-link text-light" href="{{ url_for('driver') }}">Hirdetéseim</a>
+                    {% else %}
+                        <a class="nav-link text-light" href="{{ url_for('passenger') }}">Foglalásaim</a>
+                    {% endif %}
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ url_for('account') }}">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ url_for('create_post') }}">Hirdetés feladása &ensp;</a>
+                </li>
+                <li class="nav-item my-auto">
+                    <a class="btn btn-light" type="button" href="{{ url_for('logout') }}">Kijelentkezés</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<img src="../static/8.jpg"
+     style="opacity: 70%; z-index:-1; position: fixed; bottom: 0;right: 0;top: 0;left: 0; width: 100%; height: 100%">
+<div class="container rounded"
+     style="margin-top:20px; margin-left: 40px;  padding-top: 70px; position: sticky;top: 0; position: -webkit-sticky">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="bg-light p-3 rounded shadow mb-3">
+                <h3 class="user_name text-center">{{ user["lastName"] }} {{ user["firstName"] }}</h3>
+                {% if user["address"] == '' %}
+                    <h5 class="user_address text-center">Nem megadott</h5>
+                {% else %}
+                    <h5 class="user_address text-center">{{ user["address"] }}</h5>
+                {% endif %}
+                <hr style="border:1px solid black">
+                <form class="text-center">
+                    <h2>
+                        <span class="badge badge-secondary">{{ user["passenger_or_driver"] }}</span>
+                    </h2>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style=" margin-top: -20px; margin-left: auto ">
+    <form action="" method="post">
+
+        <div class="form-row">
+            <div class="col-md-3 "
+                 style="padding: 0;border: 21px solid rgba(0,0,0, 0.6); border-bottom-left-radius: 10px; border-top-left-radius: 10px">
+                {% if search_form.honnan.errors %}
+                    {{ search_form.honnan(class="form-control is-invalid",style="border-radius: 0") }}
+                    <div class="invalid-feedback">
+                        {% for error in search_form.honnan.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ search_form.honnan(class="form-control", placeholder="honnan", maxlength="40",style="border-radius: 0", title="a mező kitöltése kötelező") }}
+                {% endif %}
+
+
+            </div>
+            <!--<div class="horizontalgap" style="width:20px"></div> -->
+            <div class="col-md-1 text-center"
+                 style="padding: 0;border: 18px solid rgba(0,0,0, 0.0); background-color: rgba(0,0,0, 0.6)">
+                <span style="color:lightgrey"><i class="fas fa-angle-double-right" style="font-size:42px"></i></span>
+            </div>
+            <div class="col-md-3" style="background-color: rgba(0,0,0, 0.6); padding: 20px">
+                {% if search_form.hova.errors %}
+                    {{ search_form.hova(class="form-control is-invalid",style="border-radius: 0") }}
+                    <div class="invalid-feedback">
+                        {% for error in search_form.hova.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ search_form.hova(type="text", class="form-control", placeholder="hova", maxlength="40",style="border-radius: 0") }}
+                {% endif %}
+            </div>
+            <div class="col-md-5"
+                 style="padding:0;border: 20px solid rgba(0,0,0, 0.6);border-bottom-right-radius: 10px;border-top-right-radius: 10px">
+                <div class="row" style="background-color: rgba(0,0,0, 0.6); margin-left: 0; margin-right: 0">
+                    <div class="col-md-6" style="">
+                        {% if search_form.estimated_travel_date.errors %}
+                            {{ search_form.estimated_travel_date(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in search_form.estimated_travel_date.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ search_form.estimated_travel_date(class="form-control mx-auto",style="width: 92%; border-radius: 0",min=today_date) }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 text-center">
+                        {{ search_form.submit_search(class="btn btn-primary btn-lg ",
+                                    style="background-color:indianred; height: 40px; padding-top: 4px") }}
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div class="container" style="margin-top: 370px">
+    {% set count = [0] %}
+    {% for driver in drivers %}
+        {% for post in driver.posts %}
+            {% if post.seats > 0 %}
+                {% if count.append(count.pop() + 1) %}
+                {% endif %}
+                <form method="post" action="/reserve" validate>
+                    <div class="modal fade" id="exampleModalCenter{{ count[0] }}" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="exampleModalCenterTitle"><u>Foglalás menü</u></h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <h5>
+                                        Hány helyet szeretne lefoglalni?
+                                    </h5>
+                                    <input type="number" name="free_seats" class="form-control mx-auto"
+                                           style="width: 20%"
+                                           min="0" max="{{ post.seats }}" required>
+                                    <input type="hidden" name="post_azon" value="{{ post._id }}"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kilép</button>
+                                    <button type="submit" class="btn btn-primary">Foglalok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+
+                <div class="card">
+                    <div class="card-header" style="padding: 7px; background-color: lightgrey">
+                        <div class="row">
+                            <div class="col-md-5 my-auto" style="max-width: 100%">
+                                <div class="text-center text-wrap rounded-pill  "
+                                     style="padding: 7px;background: #252833; font-size: 25px ;color: azure; width: 90%">
+                                    <!--<span class="">Deb</span>-->
+                                    <label id="start" style="margin: auto">{{ post.place_of_departure }}</label>
+                                    <span class="align-middle" style="padding-right: 5px; padding-left: 5px"><i
+                                            class="fas fa-long-arrow-alt-right fa-lg"></i></span>
+                                    <label id="destination" style="margin: auto">{{ post.destination }}</label>
+                                </div>
+                                <!-- <span class="badge text-wrap "style="padding: 10px;background: #000033; font-size: 25px ;color: azure; max-width: inherit" >Debrecen-Szatmárnémeti</span>-->
+                            </div>
+                            <div class="col-md-4 text-center my-auto">
+                                <div class="rounded-pill mx-auto" style=" border-width:1px; border-style: solid; border-color: darkslategray; width: 60%;
+                font-size: 25px; background-color:darkcyan; color: azure; box-shadow:4px -5px lightslategray">
+                                    <label id="start_time"
+                                           style="margin: auto">{{ post.start_time.strftime('%H:%M') }}</label>
+                                    <span style="padding-right: 5px; padding-left: 5px"><i
+                                            class="fas fa-arrow-circle-right fa-sm"></i></span>
+                                    <label id="arrival_time"
+                                           style="margin: auto">{{ post.arrival_time.strftime('%H:%M') }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center my-auto ">
+                                <div class="rounded-pill mx-auto" style="border-width: 1px; border-style: solid; background-color: ghostwhite;
+                 border-color: #3C271E;color:#252833; width: 100%;font-family: 'serif'">
+                                    <h3 style="margin: auto; padding: 5px"><span class="pl-1 pr-1" id="hely"
+                                                                                 style="margin: auto; background-color: #000033;border-radius: 5px; width: 25px; color: ghostwhite">{{ post.seats }}</span>
+                                        szabad hely</h3>
+                                </div>
+                                <!--<button type="button" style=" font-size: 23px; width: 70%;border-radius: 50px; "  class="btn btn-outline-dark ">csatlakozom</button> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body bg-light">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img src="data:image;base64, {{driver.profile_picture}}"
+                                             class="rounded-circle" alt="Responsive Image"
+                                             width="120" height="120"/>
+                                        <br>
+                                        <div class="pl-1">
+                                            {{ driver.username }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6 my-auto text-center" style="padding-right: 10%">
+                                        {% if post.vehicle_type == 'autó' %}
+                                            <i class="fas fa-car-side" style="font-size: 40px"></i>
+                                        {% elif post.vehicle_type == 'kisteherautó' %}
+                                            <i class="fas fa-shuttle-van" style="font-size: 40px"></i>
+                                        {% elif post.vehicle_type == 'kamion' %}
+                                            <i class="fas fa-truck" style="font-size: 40px"></i>
+                                        {% elif post.vehicle_type == 'busz' %}
+                                            <i class="fas fa-bus-alt" style="font-size: 40px"></i>
+                                        {% endif %}
+                                        <h5 style="">{{ post.vehicle_type }}</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 my-auto">
+                                <div class="row">
+                                    <div class="col-2 my-auto">
+                                        {% if post.house_to_house %}
+                                            <i class="fas fa-home" style="font-size: 40px"></i>
+                                            <h5 style=" margin-left: -29px; width: 200px">háztól-házig</h5>
+                                        {% else %}
+                                            <i class="fas fa-home" style="font-size: 40px; color: gray"></i>
+                                            <h5 style=" margin-left: -29px; width: 200px;color: gray">háztól-házig</h5>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="text-center">
+                                            <i class="fas fa-money-bill-wave fa-2x"
+                                               style=" font-size: 50px;color: green"> </i>
+                                            <h3 style="">{{ post.price }} Ft</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center ">
+                                <div class="row">
+                                    <div class="col-md-2 my-auto pt-4">
+                                        {% if post.package_delivery %}
+                                            <i class="fas fa-box-open" style="font-size: 40px"></i>
+                                            <h5 style=" margin-left: -70px; width: 200px">csomagszállítás</h5>
+                                        {% else %}
+                                            <i class="fas fa-box-open" style="font-size: 40px;  color: gray"></i>
+                                            <h5 style=" margin-left: -70px; width: 200px; color: gray">
+                                                csomagszállítás</h5>
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="col-md-10" style="padding-left: 0; padding-right: 0">
+
+                                        {% if user['passenger_or_driver'] == 'Sofőr' %}
+                                            <button type="button"
+                                                    style="margin-left: 60px; font-size: 23px; width: 40% "
+                                                    class="btn btn-dark" data-toggle="modal"
+                                                    data-toggle="popover" title="Figyelem!"
+                                                    data-content="Csak utasként bejelentkezve tudsz helyet foglalni"
+                                                    id="example-popover">
+                                                foglalás
+                                            </button>
+
+                                        {% elif user['passenger_or_driver'] == 'Utas' %}
+                                            <button type="button"
+                                                    style="margin-left: 60px; font-size: 23px; width: 40% "
+                                                    class="btn btn-dark" data-toggle="modal"
+                                                    data-target="#exampleModalCenter{{ count[0] }}">
+                                                foglalás
+                                            </button>
+                                        {% endif %}
+
+
+
+                                        <br> <br>
+                                        <button type="button" class="btn btn-secondary"
+                                                style="margin-left: 60px;  font-size: 23px; width: 40%"
+                                                data-toggle="collapse" data-target="#collapse{{ count[0] }}"
+                                                aria-expanded="false"
+                                                aria-controls="collapseExample">részletek
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse" id="collapse{{ count[0] }}">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Email</h5>
+                                    <span>{{ driver.email }}</span>
+                                    <br>
+                                    <br>
+                                </div>
+                                <div class="col text-center">
+                                    <h5>Autómárka</h5>
+                                    <span>{{ post.car_brand }}</span>
+                                </div>
+                                <div class="col text-center">
+                                    <h5>Modell</h5>
+                                    <span>{{ post.car_model }}</span>
+
+                                </div>
+                                <div class="col text-center">
+                                    <h5>Szín</h5>
+                                    <span>{{ post.car_color }}</span>
+                                </div>
+                                <div class="col text-center">
+                                    <h5>Évjárat</h5>
+                                    <span>{{ post.date_of_manufacture }}</span>
+                                </div>
+
+                                <div class="col">
+                                    <h5>Tel:</h5>
+                                    <span>{{ driver.phone }}</span>
+                                </div>
+                                <div class="col">
+                                    <h5>indulás dátuma</h5>
+                                    <span>{{ post.travel_date.strftime('%Y-%m-%d') }}</span>
+                                </div>
+                                <div class="col-4">
+                                    <h5>Megjegyzés:</h5>
+                                    <span>{{ post.note }}</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+
+</div>
+
+
+<!--
+ #0d9156
+
+ -->
+
+
+</body>
+</html>
