@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>create_post</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/64d844b5ac.js" crossorigin="anonymous"></script>
+
+
+</head>
+<body style="background-color: tan">
+<nav class="navbar navbar-expand-sm navbar-dark  fixed-top" style="background-color:#000033; font-size: 19px">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 25px">travel.hu</a>
+            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 21px; border-style: solid;
+            border-width: 1px; border-radius: 8px; padding: 2px 5px;">Kezdőlap</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    {% if user['passenger_or_driver'] == 'Sofőr' %}
+                    <a class="nav-link text-light" href="{{ url_for('driver') }}">Hirdetéseim</a>
+                    {% else %}
+                    <a class="nav-link text-light" href="{{ url_for('passenger') }}">Foglalásaim</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ url_for('account') }}">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ url_for('create_post') }}">Hirdetés feladása &ensp;</a>
+                </li>
+                <li class="nav-item my-auto" style="padding-right: 0">
+                    <a class="btn btn-light" type="button" href="{{ url_for('logout') }}">Kijelentkezés</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<img src="../static/golubovy.jpg"
+     style="opacity: 60%; z-index:-1; position: fixed; bottom: 0;right: 0;top: 0;left: 0; width: 100%; height: 100%">
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Siker!!!</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" style="color:green;font-size: 20px ">
+                <u>Hirdetés sikeresen feladva !</u>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Hiba!!!</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" style="color:darkred;font-size: 20px ">
+                <u>A hirdetés feladásához meg kell adnia a telefonszámát !</u>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Hiba!!!</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" style="color:darkred;font-size: 20px ">
+                <u>Csak sofőrként lehet hirdetést feladni !</u>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#{{ modal_attr }}").modal();
+    });
+</script>
+
+
+
+
+<div style="margin-top: 100px; margin-left: 10%; margin-right: 10% ">
+    <form action="" method="post" novalidate>
+        {{ post_form.hidden_tag() }}
+        <div class="form-row">
+            <div class="col-md-3" style="margin-top: 30%;height: 30%">
+                <div class="bg-light card "
+                     style="height: 100%;border-style: solid;box-shadow:4px 4px 7px; border-color:  darkslategray">
+                    <div class="text-center card-header my-auto"
+                         style="vertical-align: middle; padding: 4px; background-color: lightgrey"><h3>
+                        Megjegyzés</h3>
+                    </div>
+                    <div class="card-body" style="padding-left: 10px; padding-right: 10px; padding-top: 10px">
+                        {{ post_form.note(style="width:100%; height: 100px") }}
+                        <div class="text-center" style="font-size: 18px">
+                            <div class="form-check form-check-inline">
+                                {{ post_form.package_delivery(class="form-check-input", type="checkbox", id="inlineCheckbox1", value="option1") }}
+                                <label class="form-check-label" for="inlineCheckbox1">csomagszállítás</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                {{ post_form.house_to_house(class="form-check-input", type="checkbox", id="inlineCheckbox2", value="option2") }}
+                                <label class="form-check-label" for="inlineCheckbox2">háztól házig</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-9" style="">
+                <div class="card mx-auto" style="width: 90%;border: transparent; background: transparent">
+                    <div class="card-header" style="border-top-left-radius: 20px;border-top-right-radius: 20px; background-color: darksalmon;
+            border-style: solid; border-width: 1px; border-color: #3C271E;">
+                        <h3 class="text-center my-auto" style="color: black">Autós hirdetés feladása</h3>
+                    </div>
+                    <div class="card-body"
+                         style="  border-width: 1px; border-style: solid; border-color: #3C271E;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;background-color: rgba(255, 235, 205,0.9);">
+
+                        <div class="row" style="margin-top: -20px; margin-bottom: -5px">
+                            <div class="col text-center">
+                                <span style=" font-size: 50px"><i class="fas fa-car-side"></i></span>
+                            </div>
+                        </div>
+                        <div class="row form-group pr-5 pl-5 pb-2">
+                            <div class="col-4">
+                                <label for="car_brand" style="font-size: 20px; font-family: 'serif';">Autómárka</label>
+                                {% if post_form.car_brand.errors %}
+                                    {{ post_form.car_brand(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.car_brand.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.car_brand(type="text", class="form-control",placeholder="pl: Audi" ,id="car_brand", maxlength="30") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-4">
+                            </div>
+                            <div class="col-4">
+                                <label for="car_model"
+                                       style="font-size: 20px; font-family: 'serif'">Típus/modell</label>
+                                {% if post_form.car_model.errors %}
+                                    {{ post_form.car_model(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.car_model.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.car_model(type="text", class="form-control",placeholder="pl: A4" ,id="car_model", maxlength="30") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row form-group pr-5 pl-5 pb-2">
+                            <div class="col">
+                                <label for="car_color" style="font-size: 20px; font-family: 'serif'">Szín</label>
+                                {% if post_form.car_color.errors %}
+                                    {{ post_form.car_color(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.car_color.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.car_color(type="text", class="form-control",placeholder="Autó szine" ,id="car_color", maxlength="30") }}
+                                {% endif %}
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="date_of_manufacture"
+                                               style="font-size: 20px; font-family: 'serif';">Évjárat</label>
+                                        {% if post_form.date_of_manufacture.errors %}
+                                            {{ post_form.date_of_manufacture(class="form-control is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in post_form.date_of_manufacture.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ post_form.date_of_manufacture(type="number", class="form-control",placeholder="évjárat" ,id="date_of_manufacture",
+                                     min="1900",max="2050",maxlength="5") }}
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="col">
+                                        <label for="vehicle_type"
+                                               style="font-size: 20px; font-family: 'serif';">Jármű kat.</label>
+                                        <select class="custom-select" id="vehicle_type" name="select_vehicle"
+                                                style="font-family: 'FontAwesome'">
+                                            <option value="not selected">Válassz</option>
+                                            <option value="autó" name="autó">autó &#xf5e4;</option>
+                                            <option value="kisteherautó" name="kisteherautó">kisteherautó &#xf5b6;</option>
+                                            <option value="kamion" name="kamion">kamion &#xf0d1;</option>
+                                            <option value="busz" name="busz">busz &#xf55e;</option>
+                                        </select>
+                                        {% with messages = get_flashed_messages(with_categories=true) %}
+                                            {% if messages %}
+                                                {% for category, message in messages %}
+                                                    {% if category == 'danger' %}
+                                                        <div class="alert alert-{{ category }} text-center"
+                                                             style=" padding: 2px ">
+                                                            <p style="margin: auto">{{ message }}</p>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="seats" style="font-size: 20px; font-family: 'serif';">Szabad helyek</label>
+                                {% if post_form.seats.errors %}
+                                    {{ post_form.seats(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.seats.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.seats(type="number", class="form-control",placeholder="helyek száma" ,id="seats",  min="0",
+                                       max="100") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row form-group pr-5 pl-5 pb-2">
+
+                            <div class="col-4">
+                                <label for="place_of_departure" style="font-size: 20px; font-family: 'serif'">Indulás
+                                    helye</label>
+                                {% if post_form.place_of_departure.errors %}
+                                    {{ post_form.place_of_departure(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.place_of_departure.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.place_of_departure(type="text", class="form-control",placeholder="Település" ,id="place_of_departure", maxlength="30") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-4 " style="">
+                                <div class="row " style="margin-top: 10px">
+                                    <div class="my-auto"><span style="font-size: 30px"><i
+                                            class="fas fa-map-marker-alt"></i></span>
+                                    </div>
+                                    <div class="mx-auto"><span style="font-size: 55px"><i
+                                            class="fas fa-route"></i></span>
+                                    </div>
+                                    <div class="my-auto"><span style="font-size: 30px"><i
+                                            class="fas fa-map-marker"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <label for="destination" style="font-size: 20px; font-family: 'serif'">Érkezés
+                                    helye</label>
+                                {% if post_form.destination.errors %}
+                                    {{ post_form.destination(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.destination.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.destination(type="text", class="form-control",placeholder="Település" ,id="destination", maxlength="30") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row form-group pr-5 pl-5 pb-2">
+                            <div class="col-4 text-center" >
+                                <label for="start_time" style="font-size: 20px; font-family: 'serif'">Indulás
+                                    ideje</label><br>
+                                <div style=""> {% if post_form.start_time.errors %}
+                                    {{ post_form.start_time(class="form-control is-invalid", style="width:50%; margin-left:25%" ) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.start_time.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.start_time(id="start_time", type='time') }}
+                                {% endif %} </div>
+
+
+                            </div>
+                            <div class="col-4 " style="">
+                                <div class="row " style="margin-top: 10px">
+                                    <div class="my-auto"><span style="font-size: 30px"> <i
+                                            class="fas fa-hourglass-start"></i></span></div>
+                                    <div class="mx-auto"><span style="font-size: 55px"><i
+                                            class="far fa-clock"></i></span>
+                                    </div>
+                                    <div class="my-auto"><span style="font-size: 30px"> <i
+                                            class="fas fa-hourglass-end"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <label for="arrival_time" style="font-size: 20px; font-family: 'serif'">Érkezés
+                                    ideje</label>
+                                 <div> {% if post_form.arrival_time.errors %}
+                                    {{ post_form.arrival_time(class="form-control is-invalid", style="width:50%; margin-left:25%") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.arrival_time.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.arrival_time(id="arrival_time", type='time') }}
+                                {% endif %} </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row form-group pr-5 pl-5 pb-2">
+                            <div class="col-6" style="padding-left: 8%">
+                                <label for="price" style="font-size: 20px; font-family: 'serif'">Ár/személy</label><br>
+                                {% if post_form.price.errors %}
+                                    {{ post_form.price(class="form-control is-invalid",style="width: 40%") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.price.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.price( type="number", class="form-control",placeholder="összeg" ,id="price",style="width: 40%") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-6 " style="padding-left: 25%">
+                                <label for="travel_date" style="font-size: 20px; font-family: 'serif'">Dátum</label>
+                                {% if post_form.travel_date.errors %}
+                                    {{ post_form.travel_date(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in post_form.travel_date.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ post_form.travel_date(class="form-control",id="travel_date",style="border-radius: 0; width: 82%",min=today_date) }}
+                                {% endif %}
+
+
+                            </div>
+                        </div>
+                        <div class="row text-center" style="margin-top: 40px; ">
+                            <div class="col">
+                                {{ post_form.submit_post(class="btn btn-outline-dark btn-lg") }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+</body>
+</html>

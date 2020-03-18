@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <title>reg</title>
+</head>
+<body>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Belépési hiba!</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" style="color:darkred;font-size: 18px ">
+                <u>Hibás felhasználónév vagy jelszó !</u>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#{{ modal_attr }}").modal();
+    });
+</script>
+
+
+<nav class="navbar navbar-expand-sm navbar-dark  fixed-top" style="background-color:#000033; font-size: 19px">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 25px">travel.hu</a>
+            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 21px; border-style: solid;
+            border-width: 1px; border-radius: 8px; padding: 2px 5px;">Kezdőlap</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="dropdown my-auto">
+                    <a class="btn btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Belépek</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <form class="px-4 py-3" action="" method="post" validate>
+                            {{ login_form.hidden_tag() }}
+                            <div class="form-group">
+                                <label for="exampleDropdownFormEmail1">Email cím</label>
+                                {{ login_form.email(type="email" ,class="form-control" ,id="exampleDropdownFormEmail1" ,
+                                       placeholder="name@example.com") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleDropdownFormPassword1">Jelszó</label>
+                                {{ login_form.password(type="password", class="form-control", id="exampleDropdownFormPassword1",
+                                       placeholder="Jelszó") }}
+                            </div>
+                            <br>
+                            {{ login_form.submit2(class="btn btn-info", style="margin-left:25%") }}
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ url_for('registration') }}">Új vagy itt ? Regisztrálj be</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ url_for('registration') }}">Regisztrálok</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<img src="../static/09_Desktop.jpg"
+     style="opacity: 70%; z-index:-1; position: fixed; bottom: 0;right: 0;top: 0;left: 0; width: 100%; height: 100%">
+
+
+<div class=" col-xl-5 col-lg-7 col-md-9 col-sm-12 mx-auto" style="padding-top: 90px; padding-bottom: 5px">
+
+
+    <div style="border-radius: 10px; border-color: black; border-style: solid; border-width: 1px">
+        <div class="card-header text-center"
+             style="background-color:black;color: ivory;border-top-right-radius: 8px; border-top-left-radius: 8px">
+            <h4 class="my-auto" style="font-family: 'DejaVu Serif',serif">Regisztráció</h4>
+        </div>
+        <div class="card-body p-5"
+             style="background-color: rgba(230, 229, 228,0.8); border-bottom-right-radius: 10px; border-bottom-left-radius: 10px">
+            <form action="" method="post" validate>
+                {{ reg_form.hidden_tag() }}
+                <div class="row form-group pr-5 pl-5">
+                    <div class="col">
+                        <label for="userName" style="font-size: 20px; font-family: 'serif';">Felhasználónév</label>
+                        {% if reg_form.username.errors %}
+                            {{ reg_form.username(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in reg_form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ reg_form.username(type="text", class="form-control", id="userName", placeholder="Felhasználónév", maxlength="30") }}
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="row form-group pr-5 pl-5">
+                    <div class="col">
+                        <label for="lastName" style="font-size: 20px; font-family: 'serif';">Vezetéknév</label>
+                        {% if reg_form.lastName.errors %}
+                            {{ reg_form.lastName(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in reg_form.lastName.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ reg_form.lastName(type="text", class="form-control", id="lastName", placeholder="Vezetéknév", maxlength="30") }}
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <label for="firstName" style="font-size: 20px; font-family: 'serif';">Keresztnév</label>
+                        {% if reg_form.firstName.errors %}
+                            {{ reg_form.firstName(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in reg_form.firstName.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ reg_form.firstName(type="text", class="form-control", id="firstName", placeholder="Keresztnév", maxlength="30") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row form-group pr-5 pl-5">
+                    <div class="col">
+                        <label for="email" style="font-size: 20px; font-family: 'serif';">Email cím</label>
+                        {% if reg_form.email.errors %}
+                            {{ reg_form.email(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in reg_form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ reg_form.email(type="text", class="form-control", id="email", placeholder="name@example.com", maxlength="30") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row form-group pr-5 pl-5">
+                    <div class="col">
+                        <label for="passwordFirst" style="font-size: 20px; font-family: 'serif';">Jelszó</label>
+                        {% if reg_form.password.errors %}
+                            {{ reg_form.password(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in reg_form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ reg_form.password(type="password", class="form-control", id="passwordFirst", placeholder="Jelszó", maxlength="60") }}
+                        {% endif %}
+                        <small class="text-secondary pl-1" style="font-size:15px ">legalább 8 karakter</small>
+                    </div>
+                    <div class="col">
+                        <label for="passwordSecond" style="font-size: 20px; font-family: 'serif';">Jelszó ismét</label>
+                        {% if reg_form.confirm_password.errors %}
+                            {{ reg_form.confirm_password(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in reg_form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ reg_form.confirm_password(type="password", class="form-control", id="passwordSecond", placeholder="Jelszó", maxlength="60") }}
+                        {% endif %}
+                        <small class="text-secondary pl-1" style="font-size:15px ">legalább 8 karakter</small>
+                    </div>
+                </div>
+                <div class="row form-group pr-5 pl-5">
+                    <div class="col">
+                        <label for="phone" style="font-size: 20px; font-family: 'serif'">Telefonszám</label>
+                        {{ reg_form.phone_number( class="form-control", id="phone", placeholder="telefonszám", type="tel", pattern="[0-9].{9,}",
+                                title="A telefonszám csak számokat tartalmazhat és legalább 10 számjegyből kell állnia")}}
+                    </div>
+                    <div class="col">
+                        <label for="driver_or_passenger"
+                               style="font-size: 20px; font-family: 'serif'">Utas/Sofőr</label>
+                        <select class="custom-select" id="driver_or_passenger" name="select">
+                            <option value="not selected">Válassz a listából</option>
+                            <option value="Utas" name="passenger">Utas</option>
+                            <option value="Sofőr" name="driver">Sofőr</option>
+                        </select>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} text-center"
+                                         style=" padding: 2px ">
+                                        <p style="margin: auto">{{ message }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="row text-center" style="margin-top: 70px; margin-bottom: -30px">
+                    <div class="col">
+                        {{ reg_form.submit1(class="btn btn-outline-dark btn-lg") }}
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
