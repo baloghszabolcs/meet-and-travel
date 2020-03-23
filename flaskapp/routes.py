@@ -1,4 +1,3 @@
-from flask import jsonify
 from flask import render_template, url_for, flash, redirect, request, session
 from flaskapp.forms import RegistrationForm, LoginForm, SearchForm, AccountForm, CreatePostForm
 from flaskapp import app, bcrypt
@@ -7,10 +6,8 @@ from flaskapp.database import register, find_by_email, find_by_email_with_pass, 
     save_picture
 from flaskapp.database import find_reserved_post, find_posts, find_posts_by_address, reserve_seats, reserved_roads
 from datetime import datetime
-from bson import objectid, ObjectId
-from bson.json_util import dumps, loads
-import collections
-import base64
+from bson import ObjectId
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -47,7 +44,7 @@ def index():
 
     return render_template("index.html", login_form=login_form, modal_attr=modal_attr, search_form=search_form)
 
-#find_posts_by_address, find_posts(ezt itt kell megoldani, adatb-ben nem lehet), search_calc -fuggvenyeket modositani ,hogy csak azokat teritse vissza ahol a seats >0
+
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     if "user" in session:
@@ -90,7 +87,6 @@ def home():
 
             return render_template('home.html', drivers=drivers, user=user,
                                    search_form=search_form, today_date=today_date)
-            # nem kell mind2 render template
 
         return render_template('home.html', drivers=drivers, user=user,
                                search_form=search_form, today_date=today_date, passengers=passengers)
@@ -234,7 +230,7 @@ def driver():
         user = find_by_email(session["user"])
         posts_and_passengers = find_posts_and_passengers(session["user"])
         if posts_and_passengers:
-            posts_and_passengers = posts_and_passengers['posts']  # ebben benne van az id és csak ki kell keresni
+            posts_and_passengers = posts_and_passengers['posts']
         else:
             posts_and_passengers = []
         return render_template('driver.html', posts_and_passengers=posts_and_passengers, user=user,
@@ -257,7 +253,6 @@ def passenger():
         posts = []
         if roads:
             for _id in roads['reserved_roads']:
-                # print(_id['post_id'])
                 post = find_reserved_post(_id['post_id'])
                 for i in post:
                     posts.append((i, _id['reserved_seats']))

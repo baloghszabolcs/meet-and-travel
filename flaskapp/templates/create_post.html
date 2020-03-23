@@ -28,9 +28,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     {% if user['passenger_or_driver'] == 'Sofőr' %}
-                    <a class="nav-link text-light" href="{{ url_for('driver') }}">Hirdetéseim</a>
+                        <a class="nav-link text-light" href="{{ url_for('driver') }}">Hirdetéseim</a>
                     {% else %}
-                    <a class="nav-link text-light" href="{{ url_for('passenger') }}">Foglalásaim</a>
+                        <a class="nav-link text-light" href="{{ url_for('passenger') }}">Foglalásaim</a>
                     {% endif %}
                 </li>
                 <li class="nav-item">
@@ -50,7 +50,6 @@
 
 <img src="../static/golubovy.jpg"
      style="opacity: 60%; z-index:-1; position: fixed; bottom: 0;right: 0;top: 0;left: 0; width: 100%; height: 100%">
-
 
 
 <div class="modal fade" id="myModal">
@@ -105,10 +104,8 @@
 </script>
 
 
-
-
 <div style="margin-top: 100px; margin-left: 10%; margin-right: 10% ">
-    <form action="" method="post" novalidate>
+    <form action="" method="post">
         {{ post_form.hidden_tag() }}
         <div class="form-row">
             <div class="col-md-3" style="margin-top: 30%;height: 30%">
@@ -132,7 +129,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="col-md-9" style="">
@@ -210,16 +206,15 @@
                                             {{ post_form.date_of_manufacture(type="number", class="form-control",placeholder="évjárat" ,id="date_of_manufacture",
                                      min="1900",max="2050",maxlength="5") }}
                                         {% endif %}
-
                                     </div>
                                     <div class="col">
                                         <label for="vehicle_type"
-                                               style="font-size: 20px; font-family: 'serif';">Jármű kat.</label>
+                                               style="font-size: 20px; font-family: 'serif'">Jármű kat.</label>
                                         <select class="custom-select" id="vehicle_type" name="select_vehicle"
                                                 style="font-family: 'FontAwesome'">
                                             <option value="not selected">Válassz</option>
                                             <option value="autó" name="autó">autó &#xf5e4;</option>
-                                            <option value="kisteherautó" name="kisteherautó">kisteherautó &#xf5b6;</option>
+                                            <option value="furgon" name="furgon">furgon &#xf5b6;</option>
                                             <option value="kamion" name="kamion">kamion &#xf0d1;</option>
                                             <option value="busz" name="busz">busz &#xf55e;</option>
                                         </select>
@@ -236,7 +231,6 @@
                                             {% endif %}
                                         {% endwith %}
                                     </div>
-
                                 </div>
                             </div>
                             <div class="col">
@@ -257,7 +251,6 @@
                         <hr>
 
                         <div class="row form-group pr-5 pl-5 pb-2">
-
                             <div class="col-4">
                                 <label for="place_of_departure" style="font-size: 20px; font-family: 'serif'">Indulás
                                     helye</label>
@@ -303,11 +296,12 @@
                         <hr>
 
                         <div class="row form-group pr-5 pl-5 pb-2">
-                            <div class="col-4 text-center" >
+                            <div class="col-4 text-center">
                                 <label for="start_time" style="font-size: 20px; font-family: 'serif'">Indulás
                                     ideje</label><br>
                                 <div style=""> {% if post_form.start_time.errors %}
-                                    {{ post_form.start_time(class="form-control is-invalid", style="width:50%; margin-left:25%" ) }}
+                                    {{ post_form.start_time(class="form-control is-invalid", style="width:50%; margin-left:25%; padding: 1px;
+                                     padding-right:25px; padding-top:4px" ) }}
                                     <div class="invalid-feedback">
                                         {% for error in post_form.start_time.errors %}
                                             <span>{{ error }}</span>
@@ -316,8 +310,6 @@
                                 {% else %}
                                     {{ post_form.start_time(id="start_time", type='time') }}
                                 {% endif %} </div>
-
-
                             </div>
                             <div class="col-4 " style="">
                                 <div class="row " style="margin-top: 10px">
@@ -334,7 +326,7 @@
                             <div class="col-4 text-center">
                                 <label for="arrival_time" style="font-size: 20px; font-family: 'serif'">Érkezés
                                     ideje</label>
-                                 <div> {% if post_form.arrival_time.errors %}
+                                <div> {% if post_form.arrival_time.errors %}
                                     {{ post_form.arrival_time(class="form-control is-invalid", style="width:50%; margin-left:25%") }}
                                     <div class="invalid-feedback">
                                         {% for error in post_form.arrival_time.errors %}
@@ -373,8 +365,6 @@
                                 {% else %}
                                     {{ post_form.travel_date(class="form-control",id="travel_date",style="border-radius: 0; width: 82%",min=today_date) }}
                                 {% endif %}
-
-
                             </div>
                         </div>
                         <div class="row text-center" style="margin-top: 40px; ">
@@ -382,12 +372,9 @@
                                 {{ post_form.submit_post(class="btn btn-outline-dark btn-lg") }}
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
-
         </div>
     </form>
 </div>

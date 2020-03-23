@@ -1,13 +1,5 @@
 <!DOCTYPE html>
-<!--tehat eloszor is ez az oldal 1 index.html lesz amin lesz
- 1) 1 navigation bar fennt: amikor meg nincs bejelentkezve a felhasznalo: regisztracio,bejelentkezes, home, neve az alkalmazasnak amire ra leeht klikkelni es ujratolt
-                            amikor bennt van a nevet irja ki
- 2) honnan hova: kereses utan atdob 1 oldalra ahol meg tudom nezni a hirdeteseket ,de a foglalas feltetele,hogy be kell jelentkezzek
-
- collapse-t megcsinalni
--->
-
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,15 +69,6 @@
                                     {{ login_form.password(type="password", class="form-control", id="exampleDropdownFormPassword1",
                                        placeholder="Jelszó") }}
                                 </div>
-                                <!-- ezt max a vegen -->
-                                <!--<div class="form-group">
-                                  <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                    <label class="form-check-label" for="dropdownCheck">
-                                      Remember me
-                                    </label>
-                                  </div>
-                                </div>-->
                                 <br>
                                 {{ login_form.submit2(class="btn btn-info", style="margin-left:25%") }}
                             </form>
@@ -106,106 +89,60 @@
     <div class="mx-auto rounded " style="box-shadow:0 0 30px 1px;height:820px; background-image: url('../static/carretera.jpg'); background-repeat: no-repeat;
  max-width: 1500px; background-size: cover;   margin-top: 50px; padding-top: 8%; padding-left: 10%; padding-right: 10%">
         <form action="" method="post">
-        <div class="form-row">
-            <div class="col-md-3 "
-                 style="padding: 0;border: 21px solid rgba(0,0,0, 0.6); border-bottom-left-radius: 10px; border-top-left-radius: 10px">
-                {% if search_form.honnan.errors %}
-                    {{ search_form.honnan(class="form-control is-invalid",style="border-radius: 0") }}
-                    <div class="invalid-feedback">
-                        {% for error in search_form.honnan.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ search_form.honnan(class="form-control", placeholder="honnan", maxlength="40",style="border-radius: 0", title="a mező kitöltése kötelező") }}
-                {% endif %}
-
-
-            </div>
-            <!--<div class="horizontalgap" style="width:20px"></div> -->
-            <div class="col-md-1 text-center"
-                 style="padding: 0;border: 18px solid rgba(0,0,0, 0.0); background-color: rgba(0,0,0, 0.6)">
-                <span style="color:lightgrey"><i class="fas fa-angle-double-right" style="font-size:42px"></i></span>
-            </div>
-            <div class="col-md-3" style="background-color: rgba(0,0,0, 0.6); padding: 20px">
-                {% if search_form.hova.errors %}
-                    {{ search_form.hova(class="form-control is-invalid",style="border-radius: 0") }}
-                    <div class="invalid-feedback">
-                        {% for error in search_form.hova.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ search_form.hova(type="text", class="form-control", placeholder="hova", maxlength="40",style="border-radius: 0") }}
-                {% endif %}
-            </div>
-            <div class="col-md-5"
-                 style="padding:0;border: 20px solid rgba(0,0,0, 0.6);border-bottom-right-radius: 10px;border-top-right-radius: 10px">
-                <div class="row" style="background-color: rgba(0,0,0, 0.6); margin-left: 0; margin-right: 0">
-                    <div class="col-md-6" style="">
-                        {% if search_form.estimated_travel_date.errors %}
-                            {{ search_form.estimated_travel_date(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in search_form.estimated_travel_date.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ search_form.estimated_travel_date(class="form-control mx-auto",style="width: 92%; border-radius: 0",min=today_date) }}
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6 text-center">
-                        {{ search_form.submit_search(class="btn btn-primary btn-lg ",
+            <div class="form-row">
+                <div class="col-md-3 "
+                     style="padding: 0;border: 21px solid rgba(0,0,0, 0.6); border-bottom-left-radius: 10px; border-top-left-radius: 10px">
+                    {% if search_form.honnan.errors %}
+                        {{ search_form.honnan(class="form-control is-invalid",style="border-radius: 0") }}
+                        <div class="invalid-feedback">
+                            {% for error in search_form.honnan.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ search_form.honnan(class="form-control", placeholder="honnan", maxlength="40",style="border-radius: 0", title="a mező kitöltése kötelező") }}
+                    {% endif %}
+                </div>
+                <div class="col-md-1 text-center"
+                     style="padding: 0;border: 18px solid rgba(0,0,0, 0.0); background-color: rgba(0,0,0, 0.6)">
+                    <span style="color:lightgrey"><i class="fas fa-angle-double-right"
+                                                     style="font-size:42px"></i></span>
+                </div>
+                <div class="col-md-3" style="background-color: rgba(0,0,0, 0.6); padding: 20px">
+                    {% if search_form.hova.errors %}
+                        {{ search_form.hova(class="form-control is-invalid",style="border-radius: 0") }}
+                        <div class="invalid-feedback">
+                            {% for error in search_form.hova.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ search_form.hova(type="text", class="form-control", placeholder="hova", maxlength="40",style="border-radius: 0") }}
+                    {% endif %}
+                </div>
+                <div class="col-md-5"
+                     style="padding:0;border: 20px solid rgba(0,0,0, 0.6);border-bottom-right-radius: 10px;border-top-right-radius: 10px">
+                    <div class="row" style="background-color: rgba(0,0,0, 0.6); margin-left: 0; margin-right: 0">
+                        <div class="col-md-6" style="">
+                            {% if search_form.estimated_travel_date.errors %}
+                                {{ search_form.estimated_travel_date(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in search_form.estimated_travel_date.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ search_form.estimated_travel_date(class="form-control mx-auto",style="width: 92%; border-radius: 0",min=today_date) }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 text-center">
+                            {{ search_form.submit_search(class="btn btn-primary btn-lg ",
                                     style="background-color:indianred; height: 40px; padding-top: 4px") }}
+                        </div>
                     </div>
                 </div>
-
-
             </div>
-
-        </div>
-    </form>
-
-
-        <!--
-
-            ezek csak peldak itt van a spacing between labels meg stb szoval jo peldak, na de ok grid systemben csinaljuk, kesz.
-
-            <form>
-          <div class="form-row">
-            <div class="col-3 mx-auto">
-              <input type="text" class="form-control" placeholder="City">
-            </div>
-            <div class="col-3 mx-auto">
-              <input type="text" class="form-control" placeholder="State">
-            </div>
-            <div class="col-3 mx-auto">
-              <input type="text" class="form-control" placeholder="Zip">
-            </div>
-          </div>
         </form>
-
-
-
-
-
-
-        <form>
-          <div class="form-row justify-content-center align-self-center" >
-            <div class="col-1 ml-1 ">
-              <input type="text" class="form-control" placeholder="City">
-            </div>
-            <div class="col-1 ml-1">
-              <input type="text" class="form-control" placeholder="State">
-            </div>
-            <div class="col-1 ml-1">
-              <input type="text" class="form-control" placeholder="Zip">
-            </div>
-          </div>
-        </form>
-
-        -->
-
     </div>
 </div>
 

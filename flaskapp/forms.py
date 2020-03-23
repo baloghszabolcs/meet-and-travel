@@ -98,6 +98,10 @@ class CreatePostForm(FlaskForm):
     arrival_time = TimeField(validators=[DataRequired('Kötelező')])
     price = IntegerField(validators=[DataRequired('kötelező')])
 
+    def validate_start_time(self, start_time):
+        if start_time.data >= self.arrival_time.data:
+            raise ValidationError('indulási idő > érkezési idő')
+
     def validate_price(self, price):
         if price.data > 1000000:
             raise ValidationError("túl nagy szám")

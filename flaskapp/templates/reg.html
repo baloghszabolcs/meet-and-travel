@@ -38,8 +38,6 @@
     <div class="container">
         <div class="navbar-header">
             <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 25px">travel.hu</a>
-            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 21px; border-style: solid;
-            border-width: 1px; border-radius: 8px; padding: 2px 5px;">Kezdőlap</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -84,8 +82,6 @@
 
 
 <div class=" col-xl-5 col-lg-7 col-md-9 col-sm-12 mx-auto" style="padding-top: 90px; padding-bottom: 5px">
-
-
     <div style="border-radius: 10px; border-color: black; border-style: solid; border-width: 1px">
         <div class="card-header text-center"
              style="background-color:black;color: ivory;border-top-right-radius: 8px; border-top-left-radius: 8px">
@@ -108,7 +104,6 @@
                         {% else %}
                             {{ reg_form.username(type="text", class="form-control", id="userName", placeholder="Felhasználónév", maxlength="30") }}
                         {% endif %}
-
                     </div>
                 </div>
 
@@ -189,7 +184,7 @@
                     <div class="col">
                         <label for="phone" style="font-size: 20px; font-family: 'serif'">Telefonszám</label>
                         {{ reg_form.phone_number( class="form-control", id="phone", placeholder="telefonszám", type="tel", pattern="[0-9].{9,}",
-                                title="A telefonszám csak számokat tartalmazhat és legalább 10 számjegyből kell állnia")}}
+                                title="A telefonszám csak számokat tartalmazhat és legalább 10 számjegyből kell állnia") }}
                     </div>
                     <div class="col">
                         <label for="driver_or_passenger"
@@ -215,11 +210,9 @@
                     <div class="col">
                         {{ reg_form.submit1(class="btn btn-outline-dark btn-lg") }}
                     </div>
-
                 </div>
             </form>
         </div>
-
     </div>
 </div>
 

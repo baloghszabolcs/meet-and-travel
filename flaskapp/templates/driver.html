@@ -13,11 +13,7 @@
     <script src="https://kit.fontawesome.com/64d844b5ac.js" crossorigin="anonymous"></script>
 
 </head>
-<!--<body style="background-attachment: fixed; background-image: url('../static/2.jpg'); background-repeat: no-repeat; background-position: 0px 60px;
-background-size: 100% 70%">-->
 <body>
-
-
 <nav class="navbar navbar-expand-sm navbar-dark  fixed-top" style="background-color:#000033; font-size: 19px">
     <div class="container">
         <div class="navbar-header">
@@ -105,7 +101,6 @@ background-size: 100% 70%">-->
                                         class="fas fa-long-arrow-alt-right fa-lg"></i></span>
                                 <label id="destination" style="margin: auto">{{ post.destination }}</label>
                             </div>
-                            <!-- <span class="badge text-wrap "style="padding: 10px;background: #000033; font-size: 25px ;color: azure; max-width: inherit" >Debrecen-Szatmárnémeti</span>-->
                         </div>
                         <div class="col-md-4 text-center my-auto">
                             <div class="rounded-pill mx-auto" style=" border-width:1px; border-style: solid; border-color: darkslategray; width: 60%;
@@ -125,7 +120,6 @@ background-size: 100% 70%">-->
                                                                              style="margin: auto; background-color: #000033;border-radius: 5px; width: 25px; color: ghostwhite">{{ post.seats }}</span>
                                     szabad hely</h3>
                             </div>
-                            <!--<button type="button" style=" font-size: 23px; width: 70%;border-radius: 50px; "  class="btn btn-outline-dark ">csatlakozom</button> -->
                         </div>
                     </div>
                 </div>
@@ -145,7 +139,7 @@ background-size: 100% 70%">-->
                                 <div class="col-6 my-auto text-center" style="padding-right: 10%">
                                     {% if post.vehicle_type == 'autó' %}
                                         <i class="fas fa-car-side" style="font-size: 40px"></i>
-                                    {% elif post.vehicle_type == 'kisteherautó' %}
+                                    {% elif post.vehicle_type == 'furgon' %}
                                         <i class="fas fa-shuttle-van" style="font-size: 40px"></i>
                                     {% elif post.vehicle_type == 'kamion' %}
                                         <i class="fas fa-truck" style="font-size: 40px"></i>
@@ -220,7 +214,6 @@ background-size: 100% 70%">-->
                                 <div class="col text-center">
                                     <h5>Név</h5>
                                     <span>{{ passenger.passenger_lastName }} {{ passenger.passenger_firstName }}</span>
-
                                 </div>
                                 <div class="col text-center">
                                     <h5>Tel.:</h5>
@@ -230,23 +223,18 @@ background-size: 100% 70%">-->
                                     <h5>Lefoglalt helyek</h5>
                                     <span>{{ reserved_seats_by_passenger(passenger.passenger_email, post._id) }}</span>
                                 </div>
-
                             </div>
                             <hr>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-
             <br>
         {% endfor %}
     {% else %}
         <h1 class="p-2 text-center mx-auto" style="margin-top: -2%;border-color: #000033; border-style: solid;color: darkred;border-radius: 15px; width: 50%;
         background-color:gainsboro"> Jelenleg nincs feladott hirdetésed ! </h1>
     {% endif %}
-
-
 </div>
-
 </body>
 </html>

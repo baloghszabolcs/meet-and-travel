@@ -1,18 +1,10 @@
-import io
 import sys
-
-from json import dumps
-import numpy as np
-from resizeimage import resizeimage
-import base64
 import pymongo
 import dateutil.parser
 from bson import objectid, ObjectId
-import secrets, os
 from PIL import Image
-from gridfs import GridFS
 import base64
-from io import StringIO
+
 
 uri = "mongodb://127.0.0.1:27017/"
 client = pymongo.MongoClient(uri)
@@ -25,16 +17,15 @@ with open("flaskapp/static/avatar_2x.png", "rb") as avat:
 
 
 def register(username, firstname, lastname, email, password, phone, passenger_or_driver):
-    insert_result = collection.insert_one({"username": username,
-                                           "firstName": firstname,
-                                           "lastName": lastname,
-                                           "email": email,
-                                           "password": password,
-                                           "phone": phone,
-                                           "passenger_or_driver": passenger_or_driver,
-                                           "address": '',
-                                           "profile_picture": avatar})
-    print('registration to db: ', insert_result.acknowledged)
+    collection.insert_one({"username": username,
+                           "firstName": firstname,
+                           "lastName": lastname,
+                           "email": email,
+                           "password": password,
+                           "phone": phone,
+                           "passenger_or_driver": passenger_or_driver,
+                           "address": '',
+                           "profile_picture": avatar})
 
 
 def update_account(email, username, firstname, lastname, new_email, phone, address,
@@ -57,17 +48,6 @@ def save_picture(picture, email):
                           {"$set": {"profile_picture": image_string}})
 
 
-"""
-def create_post_db(email, car_brand, car_model, car_color, date_of_manufacture, seats, place_of_departure, destination,
-                start_time, arrival_time, price, travel_date, note):
-    post_doc = {"post": {"car_brand": car_brand, "car_model": car_model, "car_color": car_color, "date_of_manufacture": date_of_manufacture,
-                "seats": seats, "place_of_departure": place_of_departure, "destination": destination,
-                "start_time": start_time, "arrival_time": arrival_time, "price": price, "travel_date": travel_date,
-                "note": note}}
-
-"""
-
-
 def create_post_db(email, car_brand, car_model, car_color, date_of_manufacture, seats, place_of_departure, destination,
                    price, note, house_to_house, package_delivery, vehicle_type, travel_date, start_time, arrival_time):
     post_doc = {
@@ -86,9 +66,6 @@ def create_post_db(email, car_brand, car_model, car_color, date_of_manufacture, 
     collection.update_one({"email": email}, {"$push": post_doc})
 
 
-# update post
-
-
 def existing_email(email):
     if collection.find_one({"email": email}, {}):
         return True
@@ -97,14 +74,13 @@ def existing_email(email):
 
 
 def find_posts():
-    return collection.find({},{'posts': 1, 'email': 1, 'username': 1, 'phone': 1, 'profile_picture': 1, '_id': 0})
+    return collection.find({}, {'posts': 1, 'email': 1, 'username': 1, 'phone': 1, 'profile_picture': 1, '_id': 0})
 
 
 def find_posts_by_address(address):
     pipeline = [
-        # "tomato.meter": {$gt: 95}
         {"$match":
-            {"posts.place_of_departure": address}},
+             {"posts.place_of_departure": address}},
         {'$unwind': "$posts"},
         {"$match": {
             '$and': [{"posts.place_of_departure": address}, {"posts.seats": {'$gt': 0}}]}},
@@ -227,7 +203,7 @@ def search_calc(place_of_departure, destination, estimated_travel_date):
         pipeline = [
             {"$match": {
                 '$and': [{"posts.place_of_departure": place_of_departure}, {"posts.destination": destination},
-                        {"posts.travel_date": dateutil.parser.parse(estimated_travel_date)}]}},
+                         {"posts.travel_date": dateutil.parser.parse(estimated_travel_date)}]}},
             {'$unwind': "$posts"},
             {"$match": {
                 '$and': [{"posts.place_of_departure": place_of_departure}, {"posts.destination": destination},
@@ -260,11 +236,6 @@ def insert_passengers_for_driver(post_id, passenger_email, passenger_username,
                                  passenger_firstName, passenger_lastName, passenger_phone, seats):
     if passenger_exists(passenger_email, post_id):
         pass
-        # print(
-        #     collection.find_one({"posts._id": ObjectId(post_id)},
-        #                       {'posts.$': 1,
-        #                        '_id': 0})
-        #     )
     else:
         collection.update_one({"posts._id": ObjectId(post_id)},
                               {"$push":
