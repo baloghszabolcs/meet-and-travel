@@ -110,3 +110,20 @@ class CreatePostForm(FlaskForm):
     package_delivery = BooleanField()
     house_to_house = BooleanField()
     submit_post = SubmitField('Feladás')
+
+    def post_fill(self, car_brand, car_model, car_color, date_of_manufacture, seats, place_of_departure,
+                  destination, price, note, house_to_house, package_delivery, travel_date, start_time, arrival_time):
+        self.car_brand.data = car_brand
+        self.car_model.data = car_model
+        self.car_color.data = car_color
+        self.date_of_manufacture.data = date_of_manufacture
+        self.seats.data = seats
+        self.place_of_departure.data = place_of_departure
+        self.destination.data = destination
+        self.price.data = price
+        self.note.data = note
+        self.house_to_house.data = house_to_house
+        self.package_delivery.data = package_delivery
+        self.travel_date.data = travel_date
+        self.start_time.data = start_time
+        self.arrival_time.data = arrival_time

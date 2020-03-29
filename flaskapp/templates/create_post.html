@@ -44,7 +44,6 @@
                 </li>
             </ul>
         </div>
-
     </div>
 </nav>
 
@@ -52,17 +51,22 @@
      style="opacity: 60%; z-index:-1; position: fixed; bottom: 0;right: 0;top: 0;left: 0; width: 100%; height: 100%">
 
 
-<div class="modal fade" id="myModal">
+<div class="modal fade" id="myModal" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Siker!!!</h4>
-                <button type="button" class="close" data-dismiss="modal">×</button>
             </div>
             <div class="modal-body" style="color:green;font-size: 20px ">
-                <u>Hirdetés sikeresen feladva !</u>
+                {% if update %}
+                    <u>Hirdetés sikeresen módosítva !</u>
+                {% else %}
+                    <u>Hirdetés sikeresen feladva !</u>
+                {% endif %}
             </div>
-
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary" href="{{ url_for('driver') }}">Rendben</a>
+            </div>
         </div>
     </div>
 </div>
@@ -92,7 +96,6 @@
             <div class="modal-body" style="color:darkred;font-size: 20px ">
                 <u>Csak sofőrként lehet hirdetést feladni !</u>
             </div>
-
         </div>
     </div>
 </div>
@@ -130,7 +133,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-9" style="">
                 <div class="card mx-auto" style="width: 90%;border: transparent; background: transparent">
                     <div class="card-header" style="border-top-left-radius: 20px;border-top-right-radius: 20px; background-color: darksalmon;
@@ -139,7 +141,6 @@
                     </div>
                     <div class="card-body"
                          style="  border-width: 1px; border-style: solid; border-color: #3C271E;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;background-color: rgba(255, 235, 205,0.9);">
-
                         <div class="row" style="margin-top: -20px; margin-bottom: -5px">
                             <div class="col text-center">
                                 <span style=" font-size: 50px"><i class="fas fa-car-side"></i></span>
@@ -212,11 +213,28 @@
                                                style="font-size: 20px; font-family: 'serif'">Jármű kat.</label>
                                         <select class="custom-select" id="vehicle_type" name="select_vehicle"
                                                 style="font-family: 'FontAwesome'">
-                                            <option value="not selected">Válassz</option>
-                                            <option value="autó" name="autó">autó &#xf5e4;</option>
-                                            <option value="furgon" name="furgon">furgon &#xf5b6;</option>
-                                            <option value="kamion" name="kamion">kamion &#xf0d1;</option>
-                                            <option value="busz" name="busz">busz &#xf55e;</option>
+                                            {% if vehicle_type %}
+                                                {% if vehicle_type == 'autó' %}
+                                                    {% set opt1 = 'selected' %}
+                                                {% elif vehicle_type == 'furgon' %}
+                                                    {% set opt2 = 'selected' %}
+                                                {% elif vehicle_type == 'kamion' %}
+                                                    {% set opt3 = 'selected' %}
+                                                {% elif vehicle_type == 'busz' %}
+                                                    {% set opt4 = 'selected' %}
+                                                {% endif %}
+                                                <option value="not selected">Válassz</option>
+                                                <option value="autó" name="autó" {{ opt1 }}>autó &#xf5e4;</option>
+                                                <option value="furgon" name="furgon" {{ opt2 }}>furgon &#xf5b6;</option>
+                                                <option value="kamion" name="kamion" {{ opt3 }}>kamion &#xf0d1;</option>
+                                                <option value="busz" name="busz" {{ opt4 }}>busz &#xf55e;</option>
+                                            {% else %}
+                                                <option value="not selected">Válassz</option>
+                                                <option value="autó" name="autó">autó &#xf5e4;</option>
+                                                <option value="furgon" name="furgon">furgon &#xf5b6;</option>
+                                                <option value="kamion" name="kamion">kamion &#xf0d1;</option>
+                                                <option value="busz" name="busz">busz &#xf55e;</option>
+                                            {% endif %}
                                         </select>
                                         {% with messages = get_flashed_messages(with_categories=true) %}
                                             {% if messages %}
@@ -249,7 +267,6 @@
                             </div>
                         </div>
                         <hr>
-
                         <div class="row form-group pr-5 pl-5 pb-2">
                             <div class="col-4">
                                 <label for="place_of_departure" style="font-size: 20px; font-family: 'serif'">Indulás
@@ -294,7 +311,6 @@
                             </div>
                         </div>
                         <hr>
-
                         <div class="row form-group pr-5 pl-5 pb-2">
                             <div class="col-4 text-center">
                                 <label for="start_time" style="font-size: 20px; font-family: 'serif'">Indulás

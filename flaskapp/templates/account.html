@@ -35,9 +35,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     {% if user['passenger_or_driver'] == 'Sofőr' %}
-                    <a class="nav-link text-light" href="{{ url_for('driver') }}">Hirdetéseim</a>
+                        <a class="nav-link text-light" href="{{ url_for('driver') }}">Hirdetéseim</a>
                     {% else %}
-                    <a class="nav-link text-light" href="{{ url_for('passenger') }}">Foglalásaim</a>
+                        <a class="nav-link text-light" href="{{ url_for('passenger') }}">Foglalásaim</a>
                     {% endif %}
                 </li>
                 <li class="nav-item">
@@ -77,7 +77,7 @@
             <div class="col-md-3 pt-3" style="background-color:sienna; border-color: #3C271E; border-style: solid; border-bottom-left-radius: 15px;
          border-top-left-radius: 15px;color:aliceblue">
                 <div class="text-center">
-                    <img src="data:image;base64, {{user.profile_picture}}"
+                    <img src="data:image;base64, {{ user.profile_picture }}"
                          class="rounded-circle" alt="Responsive Image"
                          width="200" height="200"/>
                     <div class="form-group pt-3">
@@ -85,10 +85,9 @@
                         {{ account_form.picture(class="form-control-file",style="margin-left: 25px") }}
                         {% if account_form.picture.errors %}
                             {% for error in account_form.picture.errors %}
-                            <span class="text-danger">{{ error }}</span>
+                                <span class="text-danger">{{ error }}</span>
                             {% endfor %}
                         {% endif %}
-
                     </div>
                     <hr>
                     <h2 style="font-family: Ubuntu,serif"
@@ -101,8 +100,6 @@
                     {% endif %}
                 </div>
             </div>
-
-
             <div class="col-md-9"
                  style="background-color:rgba(222,184,135,0.8); border-bottom-right-radius: 15px;border-top-right-radius: 15px; border-style: solid; border-width: 1px; border-color: #3C271E">
                 <div class="row form-group pr-5 pl-5 pt-5 pb-2">
@@ -119,7 +116,6 @@
                             {{ account_form.username(type="text", class="form-control",placeholder="", id="userName", maxlength="30", style="width: 48%") }}
                         {% endif %}
                     </div>
-
                 </div>
                 <div class="row form-group pr-5 pl-5 pb-2">
                     <div class="col">
@@ -221,10 +217,6 @@
             </div>
         </div>
     </form>
-
-
 </div>
-
-
 </body>
 </html>

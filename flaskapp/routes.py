@@ -3,11 +3,10 @@ from flaskapp.forms import RegistrationForm, LoginForm, SearchForm, AccountForm,
 from flaskapp import app, bcrypt
 from flaskapp.database import register, find_by_email, find_by_email_with_pass, update_account, create_post_db, \
     search_calc, insert_passengers_for_driver, find_posts_and_passengers, insert_reserved_posts_for_passenger, \
-    save_picture
+    save_picture, find_post_by_post_id, update_post_db
 from flaskapp.database import find_reserved_post, find_posts, find_posts_by_address, reserve_seats, reserved_roads
 from datetime import datetime
 from bson import ObjectId
-
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -76,18 +75,13 @@ def home():
             estimated_travel_date = search_form.estimated_travel_date.data
             if estimated_travel_date:
                 estimated_travel_date = estimated_travel_date.strftime('%Y-%m-%d')
-
             drivers = search_calc(place_of_departure, destination, estimated_travel_date)
-
             drivers = [post for post in drivers]
-
             for index, i in enumerate(drivers):
                 j = i.pop('_id', None)
                 drivers[index] = {**j, **i}
-
             return render_template('home.html', drivers=drivers, user=user,
                                    search_form=search_form, today_date=today_date)
-
         return render_template('home.html', drivers=drivers, user=user,
                                search_form=search_form, today_date=today_date, passengers=passengers)
 
@@ -161,6 +155,57 @@ def account():
     return redirect(url_for('index'))
 
 
+@app.route('/update_post', methods=['POST', 'GET'])
+def update_post():
+    if "user" in session:
+        user = find_by_email(session["user"])
+        modal_attr = ""
+        today_date = datetime.now().strftime('%Y-%m-%d')
+        post_form = CreatePostForm()
+        update_p_id = request.form.get('updt_post_id')
+        if update_p_id:
+            global update
+            actual_post = find_post_by_post_id(update_p_id)
+            actual_post = [p['posts'] for p in actual_post]
+            actual_post = actual_post.pop().pop()
+            post_form.post_fill(car_brand=actual_post['car_brand'], car_model=actual_post['car_model'],
+                                car_color=actual_post['car_color'],
+                                date_of_manufacture=actual_post['date_of_manufacture'],
+                                seats=actual_post['seats'], place_of_departure=actual_post['place_of_departure'],
+                                destination=actual_post['destination'], price=actual_post['price'],
+                                house_to_house=actual_post['house_to_house'], note=actual_post['note'],
+                                package_delivery=actual_post['package_delivery'],
+                                travel_date=actual_post['travel_date'], start_time=actual_post['start_time'],
+                                arrival_time=actual_post['arrival_time'])
+        else:
+            actual_post = {'vehicle_type': ''}
+        if post_form.validate_on_submit() and request.form.get('select_vehicle') != 'not selected':
+            if find_by_email(session["user"])["phone"] == '':
+                modal_attr = "myModal2"
+                return render_template('create_post.html', post_form=post_form, today_date=today_date,
+                                       modal_attr=modal_attr, user=user, vehicle_type=actual_post['vehicle_type'])
+            if find_by_email(session["user"])["passenger_or_driver"] == 'Utas':
+                modal_attr = "myModal3"
+                return render_template('create_post.html', post_form=post_form, today_date=today_date,
+                                       modal_attr=modal_attr, user=user, vehicle_type=actual_post['vehicle_type'])
+            update_post_db(update_p_id, post_form.car_brand.data, post_form.car_model.data,
+                           post_form.car_color.data, post_form.date_of_manufacture.data, post_form.seats.data,
+                           post_form.place_of_departure.data, post_form.destination.data, post_form.price.data,
+                           post_form.note.data,
+                           post_form.house_to_house.data, post_form.package_delivery.data,
+                           request.form.get('select_vehicle'),
+                           post_form.travel_date.data.strftime('%Y-%m-%d'), post_form.start_time.data.strftime('%H:%M'),
+                           post_form.arrival_time.data.strftime('%H:%M'))
+
+            modal_attr = "myModal"
+            update = True
+        elif request.method == 'POST' and request.form.get('select_vehicle') == 'not selected':
+            flash(f'Válassz a listából !', 'danger')
+        return render_template('create_post.html', post_form=post_form, today_date=today_date, modal_attr=modal_attr,
+                               user=user, vehicle_type=actual_post['vehicle_type'], update=True)
+    return redirect(url_for('index'))
+
+
 @app.route('/create_post', methods=['GET', 'POST'])
 def create_post():
     if "user" in session:
@@ -177,7 +222,6 @@ def create_post():
                 modal_attr = "myModal3"
                 return render_template('create_post.html', post_form=post_form, today_date=today_date,
                                        modal_attr=modal_attr, user=user)
-
             create_post_db(session["user"], post_form.car_brand.data, post_form.car_model.data,
                            post_form.car_color.data, post_form.date_of_manufacture.data, post_form.seats.data,
                            post_form.place_of_departure.data, post_form.destination.data, post_form.price.data,
@@ -234,7 +278,7 @@ def driver():
         else:
             posts_and_passengers = []
         return render_template('driver.html', posts_and_passengers=posts_and_passengers, user=user,
-                               reserved_seats_by_passenger=passenger_seats)
+                               reserved_seats_by_passenger=passenger_seats, update_post=update_post)
     return redirect(url_for('index'))
 
 

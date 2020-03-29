@@ -5,7 +5,6 @@ from bson import objectid, ObjectId
 from PIL import Image
 import base64
 
-
 uri = "mongodb://127.0.0.1:27017/"
 client = pymongo.MongoClient(uri)
 db = client.test_db
@@ -97,6 +96,37 @@ def find_posts_by_address(address):
     ]
 
     return collection.aggregate(pipeline)
+
+
+def update_post_db(post_id, car_brand, car_model, car_color, date_of_manufacture, seats,
+                place_of_departure, destination, price, note, house_to_house, package_delivery, vehicle_type,
+                travel_date, start_time, arrival_time):
+    collection.update_one(
+        {"posts._id": ObjectId(post_id)},
+        {"$set":
+             {"posts.$.car_brand": car_brand,
+              "posts.$.car_model": car_model,
+              "posts.$.car_color": car_color,
+              "posts.$.date_of_manufacture": date_of_manufacture,
+              "posts.$.seats": seats,
+              "posts.$.place_of_departure": place_of_departure,
+              "posts.$.destination": destination,
+              "posts.$.price": price,
+              "posts.$.note": note,
+              "posts.$.house_to_house": house_to_house,
+              "posts.$.package_delivery": package_delivery,
+              "posts.$.vehicle_type": vehicle_type,
+              "posts.$.travel_date": travel_date,
+              "posts.$.start_time": start_time,
+              "posts.$.arrival_time": arrival_time
+              }}
+    )
+
+
+def find_post_by_post_id(post_id):
+    return collection.find({
+        "posts._id": ObjectId(post_id)
+    }, {'posts.$.price': 1, '_id': 0})
 
 
 def find_by_email(email):
