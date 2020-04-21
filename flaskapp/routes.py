@@ -16,10 +16,14 @@ def index():
     modal_attr = ""
     today_date = datetime.now().strftime('%Y-%m-%d')
 
+    if "user" in session:
+        return redirect(url_for('home'))
+
     if login_form.submit2.data:
         if login_form.validate_on_submit():
             user = find_by_email_with_pass(login_form.email.data)
             if user and bcrypt.check_password_hash(user["password"], login_form.password.data):
+                session.permanent = True
                 session["user"] = login_form.email.data
                 return redirect(url_for('home'))
             else:
@@ -99,6 +103,7 @@ def registration():
             user = find_by_email_with_pass(login_form.email.data)
             if user and bcrypt.check_password_hash(user["password"], login_form.password.data):
                 session["user"] = login_form.email.data
+                session.permanent = True
                 return redirect(url_for('home'))
             else:
                 modal_attr = "myModal"
@@ -111,6 +116,7 @@ def registration():
             register(reg_form.username.data, reg_form.first_name.data, reg_form.last_name.data, reg_form.email.data,
                      hashed_password, reg_form.phone_number.data, request.form.get('select'))
             session["user"] = reg_form.email.data
+            session.permanent = True
             flash(f'Fiók létrehozva !', 'success')
             return redirect(url_for('home'))
         elif request.method == 'POST' and request.form.get('select') == 'not selected':
