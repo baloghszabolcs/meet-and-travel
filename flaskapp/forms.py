@@ -10,10 +10,10 @@ from flaskapp.routes import session
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired('kötelező'),
                                                    Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
-    firstName = StringField('Firstname', validators=[DataRequired('kötelező'),
+    first_name = StringField('first name', validators=[DataRequired('kötelező'),
+                                                       Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
+    last_name = StringField('last name', validators=[DataRequired('kötelező'),
                                                      Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
-    lastName = StringField('Lastname', validators=[DataRequired('kötelező'),
-                                                   Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
     email = StringField('Email', validators=[DataRequired('kötelező'), Email('helytelen formátum'),
                                              Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
     password = PasswordField('Password', validators=[DataRequired('kötelező'),
@@ -50,9 +50,9 @@ class SearchForm(FlaskForm):
 class AccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired('kötelező'),
                                                    Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
-    firstName = StringField('Firstname', validators=[DataRequired('kötelező'),
+    first_name = StringField('First name', validators=[DataRequired('kötelező'),
                                                      Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
-    lastName = StringField('Lastname', validators=[DataRequired('kötelező'),
+    last_name = StringField('Last name', validators=[DataRequired('kötelező'),
                                                    Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])
     email = StringField('Email', validators=[DataRequired('kötelező'), Email('helytelen formátum'),
                                              Length(min=3, max=30, message='Minimum 3 és maximum 30 karakter')])

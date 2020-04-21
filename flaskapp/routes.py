@@ -108,7 +108,7 @@ def registration():
     if reg_form.submit1.data:
         if reg_form.validate_on_submit() and request.form.get('select') != 'not selected':
             hashed_password = bcrypt.generate_password_hash(reg_form.password.data).decode('utf-8')
-            register(reg_form.username.data, reg_form.firstName.data, reg_form.lastName.data, reg_form.email.data,
+            register(reg_form.username.data, reg_form.first_name.data, reg_form.last_name.data, reg_form.email.data,
                      hashed_password, reg_form.phone_number.data, request.form.get('select'))
             session["user"] = reg_form.email.data
             flash(f'Fiók létrehozva !', 'success')
@@ -136,13 +136,13 @@ def account():
         if request.method == 'GET':
             account_form.email.data = user["email"]
             account_form.username.data = user["username"]
-            account_form.firstName.data = user["firstName"]
-            account_form.lastName.data = user["lastName"]
+            account_form.first_name.data = user["first_name"]
+            account_form.last_name.data = user["last_name"]
             account_form.address.data = user["address"]
             account_form.phone_number.data = user["phone"]
         if account_form.validate_on_submit() and request.form.get('select') != 'not selected':
-            update_account(session["user"], account_form.username.data, account_form.firstName.data,
-                           account_form.lastName.data, account_form.email.data, account_form.phone_number.data,
+            update_account(session["user"], account_form.username.data, account_form.first_name.data,
+                           account_form.last_name.data, account_form.email.data, account_form.phone_number.data,
                            account_form.address.data, request.form.get('select'))
             session["user"] = account_form.email.data
 
@@ -248,7 +248,7 @@ def reserve():
         reserve_seats(request.form.get('post_azon'), int(request.form.get('free_seats')))
         user = find_by_email(session["user"])
         insert_passengers_for_driver(request.form.get('post_azon'), user["email"],
-                                     user["username"], user["firstName"], user["lastName"], user["phone"],
+                                     user["username"], user["first_name"], user["last_name"], user["phone"],
                                      int(request.form.get('free_seats')))
         insert_reserved_posts_for_passenger(request.form.get('post_azon'), session['user'],
                                             int(request.form.get('free_seats')))

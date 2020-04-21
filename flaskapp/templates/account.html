@@ -23,7 +23,7 @@
 <nav class="navbar navbar-expand-sm navbar-dark  fixed-top" style="background-color:#000033; font-size: 19px">
     <div class="container">
         <div class="navbar-header">
-            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 25px">travel.hu</a>
+            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 25px">meet & travel</a>
             <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 21px; border-style: solid;
             border-width: 1px; border-radius: 8px; padding: 2px 5px;">Kezdőlap</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -61,7 +61,7 @@
     </div>
 </nav>
 
-<img src="../static/golubovy.jpg"
+<img src="../static/img/golubovy.jpg"
      style="opacity: 60%; z-index:-1; position: fixed; bottom: 0;right: 0;top: 0;left: 0; width: 100%; height: 100%">
 
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -97,7 +97,7 @@
                     </div>
                     <hr>
                     <h2 style="font-family: Ubuntu,serif"
-                        class="pb-3">{{ user["lastName"] }} {{ user["firstName"] }}</h2>
+                        class="pb-3">{{ user["last_name"] }} {{ user["first_name"] }}</h2>
                     <h3><i class="fas fa-home pt-3"></i></h3>
                     {% if user["address"] == '' %}
                         <h3 style="margin-top: -10px">Nem megadott</h3>
@@ -125,29 +125,29 @@
                 </div>
                 <div class="row form-group pr-5 pl-5 pb-2">
                     <div class="col">
-                        <label for="lastName" style="font-size: 20px; font-family: 'serif';">Vezetéknév</label>
-                        {% if account_form.lastName.errors %}
-                            {{ account_form.lastName(class="form-control is-invalid") }}
+                        <label for="last_name" style="font-size: 20px; font-family: 'serif';">Vezetéknév</label>
+                        {% if account_form.last_name.errors %}
+                            {{ account_form.last_name(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in account_form.lastName.errors %}
+                                {% for error in account_form.last_name.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ account_form.lastName(type="text", class="form-control", id="lastName", placeholder="Vezetéknév", maxlength="30") }}
+                            {{ account_form.last_name(type="text", class="form-control", id="last_name", placeholder="Vezetéknév", maxlength="30") }}
                         {% endif %}
                     </div>
                     <div class="col">
-                        <label for="firstName" style="font-size: 20px; font-family: 'serif';">Keresztnév</label>
-                        {% if account_form.firstName.errors %}
-                            {{ account_form.firstName(class="form-control is-invalid") }}
+                        <label for="first_name" style="font-size: 20px; font-family: 'serif';">Keresztnév</label>
+                        {% if account_form.first_name.errors %}
+                            {{ account_form.first_name(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in account_form.firstName.errors %}
+                                {% for error in account_form.first_name.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ account_form.firstName(type="text", class="form-control", id="firstName", placeholder="Keresztnév", maxlength="30") }}
+                            {{ account_form.first_name(type="text", class="form-control", id="first_name", placeholder="Keresztnév", maxlength="30") }}
                         {% endif %}
                     </div>
                 </div>

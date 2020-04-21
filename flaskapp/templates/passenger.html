@@ -28,7 +28,7 @@
 <nav class="navbar navbar-expand-sm navbar-dark  fixed-top" style="background-color:#000033; font-size: 19px">
     <div class="container">
         <div class="navbar-header">
-            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 25px">travel.hu</a>
+            <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 25px">meet & travel</a>
             <a href="{{ url_for('home') }}" class="navbar-brand" style="font-size: 21px; border-style: solid;
             border-width: 1px; border-radius: 8px; padding: 2px 5px;">Kezdőlap</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -66,7 +66,7 @@
     </div>
 </nav>
 
-<img src="../static/8.jpg"
+<img src="../static/img/8.jpg"
      style="opacity: 70%; z-index:-2; position: fixed; bottom: 0;right: 0;top: 0;left: 0; width: 100%; height: 100%">
 <div class="container rounded"
      style="margin-top:20px; margin-left: 40px;  padding-top: 70px; position: sticky;top: 0; position: -webkit-sticky">
@@ -84,7 +84,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="bg-light p-3 rounded shadow mb-3">
-                <h3 class="user_name text-center">{{ user["lastName"] }} {{ user["firstName"] }}</h3>
+                <h3 class="user_name text-center">{{ user["last_name"] }} {{ user["first_name"] }}</h3>
                 {% if user["address"] == '' %}
 
                     <h5 class="user_address text-center"><span style="margin-right: 5px"><i

@@ -7,18 +7,18 @@ import base64
 
 uri = "mongodb://127.0.0.1:27017/"
 client = pymongo.MongoClient(uri)
-db = client.test_db
-collection = db.test_collection
+db = client.travel_db
+collection = db.travel_collection
 
-with open("flaskapp/static/avatar_2x.png", "rb") as avat:
+with open("flaskapp/static/img/avatar_2x.png", "rb") as avat:
     avatar = base64.b64encode(avat.read())
     avatar = avatar.decode('utf-8')
 
 
-def register(username, firstname, lastname, email, password, phone, passenger_or_driver):
+def register(username, first_name, last_name, email, password, phone, passenger_or_driver):
     collection.insert_one({"username": username,
-                           "firstName": firstname,
-                           "lastName": lastname,
+                           "first_name": first_name,
+                           "last_name": last_name,
                            "email": email,
                            "password": password,
                            "phone": phone,
@@ -27,10 +27,10 @@ def register(username, firstname, lastname, email, password, phone, passenger_or
                            "profile_picture": avatar})
 
 
-def update_account(email, username, firstname, lastname, new_email, phone, address,
-                   passenger_or_driver):  # profile_picture
+def update_account(email, username, first_name, last_name, new_email, phone, address,
+                   passenger_or_driver):
     collection.update_one({"email": email},
-                          {"$set": {"username": username, "firstName": firstname, "lastName": lastname,
+                          {"$set": {"username": username, "first_name": first_name, "last_name": last_name,
                                     "email": new_email, "phone": phone, "address": address,
                                     "passenger_or_driver": passenger_or_driver}})
 
@@ -131,7 +131,7 @@ def find_post_by_post_id(post_id):
 
 def find_by_email(email):
     return collection.find_one({"email": email},
-                               {'_id': 0, 'email': 1, 'username': 1, 'firstName': 1, 'lastName': 1, 'phone': 1,
+                               {'_id': 0, 'email': 1, 'username': 1, 'first_name': 1, 'last_name': 1, 'phone': 1,
                                 'address': 1, 'passenger_or_driver': 1, 'profile_picture': 1})
 
 
@@ -146,7 +146,7 @@ def find_posts_and_passengers(email):
 
 def find_by_email_with_pass(email):
     return collection.find_one({"email": email},
-                               {'_id': 0, 'email': 1, 'username': 1, 'firstName': 1, 'lastName': 1, 'phone': 1,
+                               {'_id': 0, 'email': 1, 'username': 1, 'first_name': 1, 'last_name': 1, 'phone': 1,
                                 'address': 1, 'passenger_or_driver': 1, 'profile_picture': 1, 'password': 1})
 
 
@@ -263,7 +263,7 @@ def reserve_seats(post_id, seats):
 
 
 def insert_passengers_for_driver(post_id, passenger_email, passenger_username,
-                                 passenger_firstName, passenger_lastName, passenger_phone, seats):
+                                 passenger_first_name, passenger_last_name, passenger_phone, seats):
     if passenger_exists(passenger_email, post_id):
         pass
     else:
@@ -271,8 +271,8 @@ def insert_passengers_for_driver(post_id, passenger_email, passenger_username,
                               {"$push":
                                    {"posts.$.passengers":
                                         {"passenger_email": passenger_email, "passenger_username": passenger_username,
-                                         "passenger_firstName": passenger_firstName,
-                                         "passenger_lastName": passenger_lastName,
+                                         "passenger_first_name": passenger_first_name,
+                                         "passenger_last_name": passenger_last_name,
                                          "passenger_phone": passenger_phone,
                                          "seat": seats}}})
 
