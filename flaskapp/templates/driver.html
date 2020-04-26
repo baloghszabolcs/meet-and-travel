@@ -208,6 +208,10 @@
                         {% for passenger in post.passengers %}
                             <div class="row" style="margin-bottom: -20px">
                                 <div class="col text-center">
+                                    <div class="col">
+                                        <h5>Teljes név</h5>
+                                        <span>{{ driver.last_name }} {{ driver.first_name }}</span>
+                                    </div>
                                     <h5>Email</h5>
                                     <span>{{ passenger.passenger_email }}</span>
                                     <br>

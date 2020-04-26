@@ -45,7 +45,7 @@ def index():
         return render_template('home2.html', drivers=drivers,
                                search_form=search_form, today_date=today_date, login_form=login_form)
 
-    return render_template("index.html", login_form=login_form, modal_attr=modal_attr, search_form=search_form)
+    return render_template("index.html", login_form=login_form, modal_attr=modal_attr, search_form=search_form, today_date=today_date)
 
 
 @app.route('/home', methods=['GET', 'POST'])
@@ -164,14 +164,16 @@ def account():
 @app.route('/update_post', methods=['POST', 'GET'])
 def update_post():
     if "user" in session:
+        global updt_post_id
         user = find_by_email(session["user"])
         modal_attr = ""
         today_date = datetime.now().strftime('%Y-%m-%d')
         post_form = CreatePostForm()
-        update_p_id = request.form.get('updt_post_id')
-        if update_p_id:
+        update_p_id_temp = request.form.get('updt_post_id')
+        if update_p_id_temp:
             global update
-            actual_post = find_post_by_post_id(update_p_id)
+            updt_post_id = update_p_id_temp
+            actual_post = find_post_by_post_id(update_p_id_temp)
             actual_post = [p['posts'] for p in actual_post]
             actual_post = actual_post.pop().pop()
             post_form.post_fill(car_brand=actual_post['car_brand'], car_model=actual_post['car_model'],
@@ -194,7 +196,7 @@ def update_post():
                 modal_attr = "myModal3"
                 return render_template('create_post.html', post_form=post_form, today_date=today_date,
                                        modal_attr=modal_attr, user=user, vehicle_type=actual_post['vehicle_type'])
-            update_post_db(update_p_id, post_form.car_brand.data, post_form.car_model.data,
+            update_post_db(updt_post_id, post_form.car_brand.data, post_form.car_model.data,
                            post_form.car_color.data, post_form.date_of_manufacture.data, post_form.seats.data,
                            post_form.place_of_departure.data, post_form.destination.data, post_form.price.data,
                            post_form.note.data,
@@ -202,6 +204,7 @@ def update_post():
                            request.form.get('select_vehicle'),
                            post_form.travel_date.data.strftime('%Y-%m-%d'), post_form.start_time.data.strftime('%H:%M'),
                            post_form.arrival_time.data.strftime('%H:%M'))
+
 
             modal_attr = "myModal"
             update = True

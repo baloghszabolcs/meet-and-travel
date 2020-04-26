@@ -73,7 +73,8 @@ def existing_email(email):
 
 
 def find_posts():
-    return collection.find({}, {'posts': 1, 'email': 1, 'username': 1, 'phone': 1, 'profile_picture': 1, '_id': 0})
+    return collection.find({}, {'posts': 1, 'email': 1, 'username': 1, 'first_name': 1, 'last_name': 1, 'phone': 1,
+                                'profile_picture': 1, '_id': 0})
 
 
 def find_posts_by_address(address):
@@ -86,6 +87,8 @@ def find_posts_by_address(address):
         {"$group": {
             "_id": {
                 'username': '$username',
+                'first_name': '$first_name',
+                'last_name': '$last_name',
                 'email': '$email',
                 'phone': '$phone'
             },
@@ -99,8 +102,8 @@ def find_posts_by_address(address):
 
 
 def update_post_db(post_id, car_brand, car_model, car_color, date_of_manufacture, seats,
-                place_of_departure, destination, price, note, house_to_house, package_delivery, vehicle_type,
-                travel_date, start_time, arrival_time):
+                   place_of_departure, destination, price, note, house_to_house, package_delivery, vehicle_type,
+                   travel_date, start_time, arrival_time):
     collection.update_one(
         {"posts._id": ObjectId(post_id)},
         {"$set":
@@ -116,11 +119,12 @@ def update_post_db(post_id, car_brand, car_model, car_color, date_of_manufacture
               "posts.$.house_to_house": house_to_house,
               "posts.$.package_delivery": package_delivery,
               "posts.$.vehicle_type": vehicle_type,
-              "posts.$.travel_date": travel_date,
-              "posts.$.start_time": start_time,
-              "posts.$.arrival_time": arrival_time
+              "posts.$.travel_date": dateutil.parser.parse(travel_date),
+              "posts.$.start_time": dateutil.parser.parse(start_time),
+              "posts.$.arrival_time": dateutil.parser.parse(arrival_time)
               }}
     )
+    print("mivaaaaaaaaan update",note)
 
 
 def find_post_by_post_id(post_id):
@@ -168,6 +172,8 @@ def search_calc(place_of_departure, destination, estimated_travel_date):
             {"$group": {
                 "_id": {
                     'username': '$username',
+                    'first_name': '$first_name',
+                    'last_name': '$last_name',
                     'email': '$email',
                     'phone': '$phone',
                     'profile_picture': '$profile_picture'
@@ -192,8 +198,12 @@ def search_calc(place_of_departure, destination, estimated_travel_date):
             {"$group": {
                 "_id": {
                     'username': '$username',
+                    'first_name': '$first_name',
+                    'last_name': '$last_name',
                     'email': '$email',
-                    'phone': '$phone'
+                    'phone': '$phone',
+                    'profile_picture': '$profile_picture'
+
                 },
                 "posts": {"$push": "$posts"}
 
@@ -217,8 +227,11 @@ def search_calc(place_of_departure, destination, estimated_travel_date):
             {"$group": {
                 "_id": {
                     'username': '$username',
+                    'first_name': '$first_name',
+                    'last_name': '$last_name',
                     'email': '$email',
-                    'phone': '$phone'
+                    'phone': '$phone',
+                    'profile_picture': '$profile_picture'
                 },
                 "posts": {"$push": "$posts"}
 
@@ -241,9 +254,12 @@ def search_calc(place_of_departure, destination, estimated_travel_date):
                          {"posts.seats": {'$gt': 0}}]}},
             {"$group": {
                 "_id": {
+                    'first_name': '$first_name',
+                    'last_name': '$last_name',
                     'username': '$username',
                     'email': '$email',
-                    'phone': '$phone'
+                    'phone': '$phone',
+                    'profile_picture': '$profile_picture'
                 },
                 "posts": {"$push": "$posts"}
 
