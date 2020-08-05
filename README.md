@@ -1,6 +1,6 @@
 # Meet & travel
 
-Az alkalmazást utazásszervezés céljából hoztam létre önálló projektként tanulás céljából.
+Az alkalmazást utazásszervezés céljából hoztam létre tanulásként.
 
 
 
