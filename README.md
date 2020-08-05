@@ -1,6 +1,6 @@
-# szakdolgozat
+# Meet & travel
 
-Az alkalmazást utazásszervezés céljából hoztam létre önálló projektként, mely végül a szakdolgozatom lett.
+Az alkalmazást utazásszervezés céljából hoztam létre önálló projektként tanulás céljából.
 
 
 
